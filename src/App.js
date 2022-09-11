@@ -64,7 +64,6 @@ const valuesData = [
 const getReadableValue = (count, [a, b, c]) => {
   const count100 = Math.floor(Math.abs(count) % 100)
   const count10 = Math.floor(Math.abs(count) % 10)
-  console.log([a,b,c, count100, count10])
   if (count10 === 1 && count100 !== 11) {
     return a
   }
@@ -83,8 +82,8 @@ const valueMap = valuesData.reduce((acc, item) => {
 }, {})
 
 function App() {
-  const [valueFrom, setValueFrom] = useState(null)
-  const [valueTo, setValueTo] = useState(null)
+  const [valueFrom, setValueFrom] = useState("")
+  const [valueTo, setValueTo] = useState("")
   const [result, setResult] = useState("")
   const onChangeFrom = (e) => setValueFrom(e.target.value)
   const onChangeTo = (e) => setValueTo(e.target.value)
@@ -123,6 +122,8 @@ function App() {
             <InputLabel id="select-from">Из</InputLabel>
             <Select
               labelId="select-from"
+              name="select-from"
+              data-testid="select-from"
               value={valueFrom}
               sx={{ minWidth: "200px" }}
               color="primary"
@@ -143,7 +144,9 @@ function App() {
             <InputLabel id="select-to">В</InputLabel>
             <Select
               labelId="select-to"
+              name="select-to"
               value={valueTo}
+              data-testid="select-to"
               sx={{ minWidth: "200px" }}
               color="primary"
               label="В"
