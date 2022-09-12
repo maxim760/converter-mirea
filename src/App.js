@@ -61,7 +61,7 @@ const valuesData = [
   },
 ]
 
-const getReadableValue = (count, [a, b, c]) => {
+const getReadableCaption = (count, [a, b, c]) => {
   const count100 = Math.floor(Math.abs(count) % 100)
   const count10 = Math.floor(Math.abs(count) % 10)
   if (count10 === 1 && count100 !== 11) {
@@ -71,7 +71,12 @@ const getReadableValue = (count, [a, b, c]) => {
     return b
   }
   return c
+}
 
+const getToValue = (fromCount, metersFrom, metersTo) => {
+  const ratio = metersFrom / metersTo
+  const to = ratio * fromCount
+  return to
 }
 
 const valueMap = valuesData.reduce((acc, item) => {
@@ -104,10 +109,8 @@ function App() {
     if (isNaN(from)) {
       return
     }
-
-    const ratio = valueMap[valueFrom].value / valueMap[valueTo].value
-    const to = ratio * from
-    setResult(`${to} ${getReadableValue(to, valueMap[valueTo].captionMany)}`)
+    const to = getToValue(from, valueMap[valueFrom].value, valueMap[valueTo].value)
+    setResult(`${to} ${getReadableCaption(to, valueMap[valueTo].captionMany)}`)
   }
 
 
