@@ -1,90 +1,7 @@
-import logo from './logo.svg';
-import './App.css';
-import { Container, Select, Box, MenuItem, TextField, Button, Typography, InputLabel, FormControl } from '@mui/material';
-import { useState } from 'react';
-
-const valuesData = [
-  { 
-    id: "1",
-    caption: "Метр",
-    captionMany: ["Метр","Метра", "Метров"],
-    value: 1,
-  },
-  {
-    id: "2",
-    caption: "Сантиметр",
-    captionMany: ["Сантиметр","Сантиметра", "Сантиметров"],
-    value: 0.01,
-  },
-  {
-    id: "222",
-    caption: "Сантиметр",
-    captionMany: ["Сантиметр","Сантиметра", "Сантиметров"],
-    value: 0.01,
-  },
-  {
-    id: "3",
-    caption: "Миля",
-    captionMany: ["Миля", "Мили", "Миль"],
-    value: 1609.34
-  },
-  {
-    id: "4",
-    caption: "Верста",
-    captionMany: ["Верста", "Версты", "Верст"],
-    value: 1066.8
-  },
-  {
-    id: "5",
-    caption: "Аршин",
-    captionMany: ["Аршин", "Аршина", "Аршинов"],
-    value: 0.7112
-  },
-  {
-    id: "6",
-    caption: "Дюйм",
-    captionMany: ["Дюйм", "Дюйма", "Дюймов"],
-    value: 0.0254
-  },
-  // здесь ошибка должно быть 0.9144
-  {
-    id: "7",
-    caption: "Ярд",
-    captionMany: ["Ярд", "Ярда", "Ярдов"],
-    value: 0.5144
-  },
-  {
-    id: "8",
-    caption: "Фарлонг",
-    captionMany: ["Фарлонг", "Фарлонга", "Фарлонгов"],
-    value: 201
-  },
-]
-
-const getReadableCaption = (count, [a, b, c]) => {
-  const count100 = Math.floor(Math.abs(count) % 100)
-  const count10 = Math.floor(Math.abs(count) % 10)
-  if (count10 === 1 && count100 !== 11) {
-    return a
-  }
-  if (count10 >= 2 && count10 <= 4) {
-    return b
-  }
-  return c
-}
-
-const getToValue = (fromCount, metersFrom, metersTo) => {
-  const ratio = metersFrom / metersTo
-  const to = ratio * fromCount
-  return to
-}
-
-const valueMap = valuesData.reduce((acc, item) => {
-  return {
-    ...acc,
-    [item.id]: item
-  }
-}, {})
+import { Container, Select, Box, MenuItem, TextField, Button, Typography, InputLabel, FormControl, ListSubheader } from '@mui/material';
+import { useMemo, useState } from 'react';
+import {valueMap, valuesByGroups} from "./utils/data"
+import {getReadableCaption, getToValue} from "./utils/functions"
 
 function App() {
   const [valueFrom, setValueFrom] = useState("")
@@ -93,6 +10,25 @@ function App() {
   const onChangeFrom = (e) => setValueFrom(e.target.value)
   const onChangeTo = (e) => setValueTo(e.target.value)
   const [fields, setFields] = useState({ from: "" })
+  const optionsInSelect = useMemo(() => {
+    return valuesByGroups.map(({ group, nested }) => (
+      <>
+        <ListSubheader sx={{
+          height: "24px",
+          lineHeight: "24px",
+          fontSize: "13px",
+          display: "flex",
+          borderBottom: t => `1px solid ${t.palette.divider}`,
+          borderTop: t => `1px solid ${t.palette.divider}`,
+          }} key={group}>
+          {group}
+        </ListSubheader>
+        {nested.map((item, i, arr) => (
+          <MenuItem sx={{pl: 3.6, height: "28px", fontSize: "16px"}} key={item.id} value={item.id}>{item.caption}</MenuItem>
+        ))}
+      </>
+    ))
+  }, [])
   const onChangeFields = (e) => {
     setFields((prev) => {
       return {
@@ -113,9 +49,6 @@ function App() {
     setResult(`${to} ${getReadableCaption(to, valueMap[valueTo].captionMany)}`)
   }
 
-
-
-
   return (
     <Container maxWidth="xs" sx={{alignItems: "center", display: "flex", flexDirection: "column"}}>
       <Typography sx={{fontSize: "24px", mb: "30px"}}>Конветер величин</Typography>
@@ -133,11 +66,7 @@ function App() {
               label="Из"
               onChange={onChangeFrom}
             >
-              {valuesData.map((item) => {
-                return (
-                  <MenuItem key={item.id} value={item.id}>{item.caption}</MenuItem>
-                  )
-                })}
+              {optionsInSelect}
             </Select>
           </FormControl>
           <TextField name="from" value={fields.from} onChange={onChangeFields} placeholder="Введите значение"  />
@@ -155,11 +84,7 @@ function App() {
               label="В"
               onChange={onChangeTo}
             >
-              {valuesData.map((item) => {
-                return (
-                  <MenuItem key={item.id} value={item.id}>{item.caption}</MenuItem>
-                  )
-                })}
+              {optionsInSelect}
             </Select>
           </FormControl>
         </Box>
