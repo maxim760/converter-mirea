@@ -41,12 +41,12 @@ describe('all tests', () => {
     UserEvent.click(arOptionTo)
     UserEvent.type(input, "3")
     UserEvent.click(button)
-    expect(result).toHaveTextContent(/4\.218222722159729 Аршина/i)
+    expect(result).toHaveTextContent(/4\.2182 Аршина/i)
     UserEvent.clear(input)
     UserEvent.type(input, "5")
-    expect(result).toHaveTextContent(/4\.218222722159729 Аршина/i)
+    expect(result).toHaveTextContent(/4\.2182 Аршина/i)
     UserEvent.click(button)
-    expect(result).toHaveTextContent(/7\.030371203599549 Аршинов/i)
+    expect(result).toHaveTextContent(/7\.0304 Аршинов/i)
   });
   
 });

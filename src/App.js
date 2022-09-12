@@ -1,6 +1,6 @@
 import { Container, Select, Box, MenuItem, TextField, Button, Typography, InputLabel, FormControl, ListSubheader } from '@mui/material';
-import { useMemo, useState } from 'react';
-import {valueMap, valuesByGroups} from "./utils/data"
+import React, { useMemo, useState } from 'react';
+import {valueMap, valuesWithGroups} from "./utils/data"
 import {getReadableCaption, getToValue} from "./utils/functions"
 
 function App() {
@@ -11,23 +11,29 @@ function App() {
   const onChangeTo = (e) => setValueTo(e.target.value)
   const [fields, setFields] = useState({ from: "" })
   const optionsInSelect = useMemo(() => {
-    return valuesByGroups.map(({ group, nested }) => (
-      <>
-        <ListSubheader sx={{
-          height: "24px",
-          lineHeight: "24px",
-          fontSize: "13px",
-          display: "flex",
-          borderBottom: t => `1px solid ${t.palette.divider}`,
-          borderTop: t => `1px solid ${t.palette.divider}`,
-          }} key={group}>
-          {group}
-        </ListSubheader>
-        {nested.map((item, i, arr) => (
-          <MenuItem sx={{pl: 3.6, height: "28px", fontSize: "16px"}} key={item.id} value={item.id}>{item.caption}</MenuItem>
-        ))}
-      </>
-    ))
+    return valuesWithGroups.map(({ isGroup, group, id, caption }) => {
+      if (isGroup) {
+        return (
+          <ListSubheader key={`group_${group}`} sx={{
+            height: "24px",
+            lineHeight: "24px",
+            fontSize: "13px",
+            display: "flex",
+            borderBottom: t => `1px solid ${t.palette.divider}`,
+            borderTop: t => `1px solid ${t.palette.divider}`,
+          }}>
+            {group}
+          </ListSubheader>
+        )
+      }
+      return (
+        <MenuItem
+          key={`item_${id}`}
+          sx={{ pl: 3.6, height: "28px", fontSize: "16px" }}
+          value={id}
+        >{caption}</MenuItem>
+      )
+    })
   }, [])
   const onChangeFields = (e) => {
     setFields((prev) => {
@@ -90,7 +96,7 @@ function App() {
         </Box>
       </Box>
       <Button onClick={onConfirm} variant="contained" sx={{mt: "16px"}}>Применить</Button>
-      <Box onClick={onConfirm} sx={{mt: "12px", alignSelf: "flex-start"}}>Результат: <Box component="span" sx={{textDecoration: "underline"}}>{result}</Box></Box>
+      <Box onClick={onConfirm} sx={{mt: "12px", alignSelf: "flex-start"}}>Результат: <Box component="span" sx={{textDecoration: "underline", textTransform: "lowercase"}}>{result}</Box></Box>
     </Container>
   );
 }

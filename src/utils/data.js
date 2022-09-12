@@ -72,7 +72,7 @@ const valuesData = [
   },
 ]
 
-export const valuesByGroups = Object
+export const valuesWithGroups = Object
   .entries(
     valuesData.reduce((acc, item) => {
       if (!acc[item.group]) {
@@ -82,7 +82,7 @@ export const valuesByGroups = Object
       return acc
     }, [])
   )
-  .map(([key, value]) => ({ group: key, nested: value }))
+  .flatMap(([key, value]) => ([{isGroup: true, group: key}, ...value]))
 
 export const valueMap = valuesData.reduce((acc, item) => {
   return {
