@@ -20,14 +20,6 @@ const valuesData = [
     group: GroupsMap.CI
   },
   {
-    id: "222",
-    caption: "Сантиметр",
-    captionMany: ["Сантиметр","Сантиметра", "Сантиметров"],
-    value: 0.01,
-    group: GroupsMap.CI
-
-  },
-  {
     id: "3",
     caption: "Миля",
     captionMany: ["Миля", "Мили", "Миль"],
@@ -55,12 +47,11 @@ const valuesData = [
     value: 0.0254,
     group: GroupsMap.Americ
   },
-  // здесь ошибка должно быть 0.9144
   {
     id: "7",
     caption: "Ярд",
     captionMany: ["Ярд", "Ярда", "Ярдов"],
-    value: 0.5144,
+    value: 0.9144,
     group: GroupsMap.Americ
   },
   {

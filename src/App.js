@@ -3,6 +3,12 @@ import React, { useMemo, useState } from 'react';
 import {valueMap, valuesWithGroups} from "./utils/data"
 import {getReadableCaption, getToValue} from "./utils/functions"
 
+const invalidChars = [
+  "-",
+  "+",
+  "e",
+];
+
 function App() {
   const [valueFrom, setValueFrom] = useState("")
   const [valueTo, setValueTo] = useState("")
@@ -43,6 +49,11 @@ function App() {
       }
     })
   }
+  const onKeyDownNumber = (e) => {
+    if(invalidChars.includes(e.key?.toLowerCase())) {
+      e.preventDefault()
+    }
+  }
   const onConfirm = () => {
     if (!valueTo || !valueFrom) {
       return
@@ -57,7 +68,7 @@ function App() {
 
   return (
     <Container maxWidth="xs" sx={{alignItems: "center", display: "flex", flexDirection: "column"}}>
-      <Typography sx={{fontSize: "24px", mb: "30px"}}>Конветер величин</Typography>
+      <Typography sx={{fontSize: "24px", mb: "30px"}}>Конвертер величин</Typography>
       <Box>
         <Box sx={{ display: "flex" }}>
           <FormControl>
@@ -75,7 +86,15 @@ function App() {
               {optionsInSelect}
             </Select>
           </FormControl>
-          <TextField name="from" value={fields.from} onChange={onChangeFields} placeholder="Введите значение"  />
+          <TextField
+            name="from"
+            value={fields.from}
+            onChange={onChangeFields}
+            placeholder="Введите значение"
+            onKeyDown={onKeyDownNumber}
+            inputProps={{ inputMode: 'decimal' }}
+            type="number"
+          />
         </Box>
         <Box sx={{ display: "flex", mt: "12px" }}>
           <FormControl>
