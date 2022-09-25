@@ -16,6 +16,7 @@ export const getReadableCaption = (count, [a, b, c]) => {
 }
 
 export const getToValue = (fromCount, metersFrom, metersTo) => {
+  NP.enableBoundaryChecking(false)
   const ratio = NP.divide(metersFrom, metersTo)
   const to = NP.times(ratio, fromCount)
   const strValue = Math.abs(to) > 1 ? to.toFixed(4) : to.toPrecision(3) 
