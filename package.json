@@ -19,12 +19,52 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "electron:start": "concurrently -k \"cross-env BROWSER=none yarn start\" \"yarn electron\"",
+    "electron:package": "electron-builder build --win --mac -c.extraMetadata.main=build/electron.js --publish never",
+    "electron": "wait-on tcp:3000 && export ELECTRON_START_URL=http://localhost:3000 && electron . --maincompanyid=apikeytest,userid=123test,userrole=role111,docid=testdoc,tableid=123,subtableid=999,recordid=rec333,ismed=1"
   },
   "eslintConfig": {
     "extends": [
       "react-app",
       "react-app/jest"
+    ]
+  },
+  "build": {
+    "appId": "electron.com.converter-desktop",
+    "mac": {
+      "category": "public.app-category.business",
+      "target": [
+        {
+          "target": "dmg",
+          "arch": "x64"
+        },
+        {
+          "target": "pkg",
+          "arch": "x64"
+        }
+      ],
+      "hardenedRuntime": false
+    },
+    "win": {
+      "artifactName": "${productName}-${version}.${ext}",
+      "target": [
+        {
+          "target": "nsis",
+          "arch": "x64"
+        }
+      ]
+    },
+    "nsis": {
+      "artifactName": "${productName}-${version}-installer.${ext}"
+    },
+    "directories": {
+      "buildResources": "public"
+    },
+    "files": [
+      "build/**/*",
+      "node_modules/**/*",
+      "public/**/*"
     ]
   },
   "browserslist": {
