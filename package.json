@@ -22,7 +22,7 @@
     "eject": "react-scripts eject",
     "electron:start": "concurrently -k \"cross-env BROWSER=none yarn start\" \"yarn electron\"",
     "electron:package": "electron-builder build --win --mac -c.extraMetadata.main=build/electron.js --publish never",
-    "electron": "wait-on tcp:3000 && export ELECTRON_START_URL=http://localhost:3000 && electron . --maincompanyid=apikeytest,userid=123test,userrole=role111,docid=testdoc,tableid=123,subtableid=999,recordid=rec333,ismed=1"
+    "electron": "wait-on tcp:3000 && export ELECTRON_START_URL=http://localhost:3000"
   },
   "eslintConfig": {
     "extends": [
