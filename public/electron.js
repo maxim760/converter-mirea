@@ -22,7 +22,6 @@ async function createWindow() {
     height: electronScreen.getPrimaryDisplay().workArea.height,
     webPreferences: {
       nodeIntegration: true,
-      preload: path.resolve(__dirname, 'preload.js'),
     }
   });
   mainWindow.setMenuBarVisibility(null)
